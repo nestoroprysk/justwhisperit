@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Length Calculator</title>
+    <title>Transcript Audio File</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,29 +44,30 @@
     </style>
 </head>
 <body>
-    <h1>File API Example</h1>
-    <label for="api-key-input">API Key:</label>
+    <h1>Transcript Audio File</h1>
+    <label for="api-key-input">OpenAI API Key:</label>
     <input type="password" id="api-key-input" placeholder="Enter your API key">
-    <button onclick="saveApiKey()">Save API Key</button>
+    <button id="save-api-key" onclick="saveApiKey()">Save</button>
     <div id="drop-zone" ondragover="event.preventDefault()" onclick="selectFile()" ondrop="handleFileDrop(event)">
-        <p>Drop your file here or click to browse</p>
+        <p>Drop your audio file here or click to browse</p>
         <input type="file" id="file-input" style="display:none" onchange="handleFileSelect(event)">
     </div>
     <div id="result"></div>
     <button id="download-btn" onclick="downloadResult()" style="display:none;">Download Result</button>
     <script>
         const apiKeyInput = document.getElementById("api-key-input");
+        const apiKeySave = document.getElementById("save-api-key");
         const dropZone = document.getElementById("drop-zone");
         const fileInput = document.getElementById("file-input");
         const resultDiv = document.getElementById("result");
         const downloadBtn = document.getElementById("download-btn");
         let apiResponse = null;
+        let fileName = null;
 
         function saveApiKey() {
             const apiKey = apiKeyInput.value;
             if (apiKey) {
                 sessionStorage.setItem("API_KEY", apiKey);
-                apiKeyInput.disabled = true;
                 apiKeyInput.placeholder = "API Key saved";
                 dropZone.style.display = "block";
             } else {
@@ -86,6 +87,7 @@
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
+            fileName = file.name.split('.').slice(0, -1).join('.').split('/').slice(-1)[0];
             processFile(file);
         }
 
@@ -130,10 +132,12 @@
                 return;
             }
 
-            const resultFile = new Blob([apiResponse], { type: "text/plain" });
+            const apiResonseJSON = JSON.parse(apiResponse);
+
+            const resultFile = new Blob([apiResonseJSON["text"]], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(resultFile);
-            link.download = "result.txt";
+            link.download = `${fileName}.txt`;
             link.click();
         }
     </script>

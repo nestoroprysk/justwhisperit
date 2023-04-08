@@ -1,1 +1,5 @@
-All you need is to create an OpenAI API key https://platform.openai.com/account/api-keys and open [justwhisperit.html](./justwhisperit.html) in your browser to transcript audio.
+# Just Whisper It
+
+All you need is https://raw.githack.com/nestoroprysk/justwhisperit/main/justwhisperit.html to transcript audio files.
+
+Make sure to paste a valid OpenAI API key https://platform.openai.com/account/api-keys.
